@@ -4,3 +4,32 @@ author: "Chenyu Jin"
 date: "2024-09-26"
 output: github_document
 ---
+
+# Problem 1
+
+## Read and clean the data:
+
+First, we should read the excel file:
+
+```{r}
+library(tidyverse)
+transit_df = read_csv(file = "hw2data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv")
+```
+
+Then, we select the columns of interest:
+
+```{r}
+selected_transit_df <- transit_df |>
+  select("Line", "Station Name", "Station Latitude", "Station Longitude", c("Route1":"Route11"), "Entry", "Vending", "Entrance Type", "ADA")
+```
+
+Next, we convert the entry variable from character (YES vs NO) to a logical variable:
+
+```{r}
+cleaned_transit_df <- selected_transit_df |>
+  mutate(Entry = ifelse(Entry == "YES", TRUE, FALSE))
+```
+
+
+This data set contains information about entrances and exits for each subway station in the NYC transit system. The key variables include the subway line (Line), station name (Station Name), station location (Station Latitude, Station Longitude), routes served (Route1 ~ Route11), whether entry is permitted (Entry), vending machine availability (Vending), entrance type (Entrance Type), and ADA compliance (ADA). In the cleaning process, we selected these relevant columns from the original data set and converted the Entry variable from a character format (YES/NO) to a logical format (TRUE/FALSE). The resulting data set contains 19 columns and retains all 1868 original rows from the source data. The data set is tidy, as each variable is a column, each observation is a row, and each cell contains a single value.
+
