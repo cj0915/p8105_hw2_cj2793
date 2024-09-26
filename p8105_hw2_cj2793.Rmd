@@ -1,0 +1,6 @@
+---
+title: "p8105_hw2_cj2793"
+author: "Chenyu Jin"
+date: "2024-09-26"
+output: github_document
+---
