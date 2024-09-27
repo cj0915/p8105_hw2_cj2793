@@ -377,3 +377,19 @@ After the first step of merging bakers.csv with the cleaned results.csv file, th
 Once the datasets were merged, the columns were reorganized for better readability. The Baker Age, Occupation and Hometown columns were moved immediately after the Baker column. To further enhance the structure of the dataset, the data was sorted by Series, Episode, and Baker, ensuring a logical flow that made it easy to track each contestant’s progress throughout the competition.
 
 Finally, the cleaned and organized dataset was exported as final_bakeoff_data.csv. The resulting dataset includes detailed demographic information about each baker, such as their first name, age, occupation, and hometown, along with performance data for each episode in each series, including signature and showstopper bakes, technical rankings, and overall episode results. The logical structure of the dataset allows for easy tracking of individual contestants and their journeys across seasons.
+
+## Create a reader-friendly table
+
+```{r}
+starbakers_winners <- final_data |>
+  filter(Series %in% c("5", "6", "7", "8", "9", "10") & 
+         Result %in% c("STAR BAKER", "WINNER")) |>
+  select(Series, Episode, Baker, `Baker Age`, `Baker Occupation`, Hometown, Result) %>%
+  arrange(Series, Episode)
+
+winners <- starbakers_winners |>
+  filter(Result == "WINNER")
+```
+
+Most of the winners appear to be in their 30s, except for Nancy, who won Season 5 at the age of 60. 
+To our surprise, the competition is highly dynamic and the overall winner isn't always the clear front runner throughout the season.
