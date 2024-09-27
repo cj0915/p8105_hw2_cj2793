@@ -393,3 +393,23 @@ winners <- starbakers_winners |>
 
 Most of the winners appear to be in their 30s, except for Nancy, who won Season 5 at the age of 60. 
 To our surprise, the competition is highly dynamic and the overall winner isn't always the clear front runner throughout the season.
+
+## Import, clean, tidy, and organize the viewership data
+
+```{r}
+viewers_df = read.csv(file = "hw2data/viewers.csv")
+head(viewers_df, 10)
+```
+
+What was the average viewership in Season 1? In Season 5?
+```{r}
+Series1 = viewers_df |>
+  pull(Series.1)
+mean(Series1, na.rm = TRUE)
+
+Series5 = viewers_df |>
+  pull(Series.5)
+mean(Series5, na.rm = TRUE)
+```
+
+The average viewership in Season 1 was 2.77, in Season 5 was 10.0393.
