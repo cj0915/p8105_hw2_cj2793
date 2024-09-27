@@ -33,3 +33,53 @@ cleaned_transit_df <- selected_transit_df |>
 
 This data set contains information about entrances and exits for each subway station in the NYC transit system. The key variables include the subway line (Line), station name (Station Name), station location (Station Latitude, Station Longitude), routes served (Route1 ~ Route11), whether entry is permitted (Entry), vending machine availability (Vending), entrance type (Entrance Type), and ADA compliance (ADA). In the cleaning process, we selected these relevant columns from the original data set and converted the Entry variable from a character format (YES/NO) to a logical format (TRUE/FALSE). The resulting data set contains 19 columns and retains all 1868 original rows from the source data. The data set is tidy, as each variable is a column, each observation is a row, and each cell contains a single value.
 
+## Answer the following questions using these data:
+
+1. How many distinct stations are there?
+
+```{r}
+# We first create a new variable called 'Station', which is the full name of the Station, like '125th St 8th Avenue'
+
+cleaned_transit_df <- cleaned_transit_df |>
+  mutate(Station = paste(`Station Name`, Line, sep = " "))
+
+distinct_stations <- cleaned_transit_df |>
+  distinct(Station)
+
+num_distinct_stations <- nrow(distinct_stations)
+
+num_distinct_stations
+```
+
+There are 465 stations.
+
+2. How many stations are ADA compliant?
+
+```{r}
+ada_status <- cleaned_transit_df |>
+  filter(ADA == TRUE) |>
+  nrow()
+
+ada_status
+```
+
+There are 468 stations with ADA compliant.
+
+3. What proportion of station entrances / exits without vending allow entrance?
+
+```{r}
+wihout_vending <- cleaned_transit_df |>
+  filter(Vending == "NO")
+
+entry_status <- wihout_vending |>
+  filter(Entry == TRUE) |>
+  nrow()
+
+vending_status <- nrow(wihout_vending)
+
+proportion <- entry_status / vending_status
+
+proportion
+```
+
+Proportion of station entrances / exits without vending allow entrance is 37.70%
