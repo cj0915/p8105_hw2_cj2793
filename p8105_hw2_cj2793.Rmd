@@ -182,7 +182,7 @@ Gwy_trashwheel_data <- Gwy_trashwheel_data |>
   mutate(Trash_Wheel = "Gwynnda Trash Wheel")
 ```
 
-## Combine all datasets into a single tidy dataset
+## Combine all datasets into a single tidy dataset:
 
 Because different data sheets have different number of trash types, we should reformat the data structures:
 
@@ -221,3 +221,34 @@ str(Gwy_trashwheel_data)
 combined_data <- bind_rows(Mr_trashwheel_data, Prof_trashwheel_data, Gwy_trashwheel_data)
 ```
 
+## Write a paragraph about these data:
+
+```{r}
+# Count the number of observations in the data set
+num_observations <- nrow(combined_data)
+
+num_observations
+
+# Total weight of trash collected by Professor Trash Wheel
+Prof_trashwheel_weight <- combined_data |>
+  filter(Trash_Wheel == "Professor Trash Wheel") |>
+  distinct(Dumpster, .keep_all = TRUE) |>
+  summarize(Total_Weight = sum(Weight, na.rm = TRUE)) |>
+  pull(Total_Weight)
+
+Prof_trashwheel_weight
+
+# Total number of cigarette butts collected by Gwynnda in June of 2022
+Gwy_cigbutts_number <- combined_data |>
+  filter(Trash_Wheel == "Gwynnda Trash Wheel" & 
+         Trash_Type == "Cigarette_Butts" & 
+         Month == "June" & 
+         Year == 2022) |>
+  distinct(Dumpster, .keep_all = TRUE) |>
+  summarize(Total_Number = sum(Amount, na.rm = TRUE)) |>
+  pull(Total_Number)
+
+Gwy_cigbutts_number
+```
+
+The data set contains a total of 5499 observations across three trash wheels: Mr. Trash Wheel, Professor Trash Wheel, and Gwynnda Trash Wheel (I include 5499 obs because I transform the data set to a long data table). Each observation represents a record of the amount of trash collected for various categories, such as plastic bottles, polystyrene, cigarette butts, glass bottles, and sports balls. One key variable in the data set is Weight, which records the weight of trash collected in tons. For the available data, Professor Trash Wheel collected a total of 216.26 tons of trash. Additionally, Gwynnda Trash Wheel collected 18120 cigarette butts in June of 2022.
