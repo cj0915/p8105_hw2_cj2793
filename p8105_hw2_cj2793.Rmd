@@ -252,3 +252,28 @@ Gwy_cigbutts_number
 ```
 
 The data set contains a total of 5499 observations across three trash wheels: Mr. Trash Wheel, Professor Trash Wheel, and Gwynnda Trash Wheel (I include 5499 obs because I transform the data set to a long data table). Each observation represents a record of the amount of trash collected for various categories, such as plastic bottles, polystyrene, cigarette butts, glass bottles, and sports balls. One key variable in the data set is Weight, which records the weight of trash collected in tons. For the available data, Professor Trash Wheel collected a total of 216.26 tons of trash. Additionally, Gwynnda Trash Wheel collected 18120 cigarette butts in June of 2022.
+
+# Problem 3
+
+## Import, clean, tidy, and otherwise wrangle bakers, bakes and results datasets:
+
+First, we should import the three datasets:
+
+```{r}
+library(tidyverse)
+bakers_df = read_csv(file = "hw2data/bakers.csv")
+bakes_df = read.csv(file = "hw2data/bakes.csv")
+results_df = read.csv(file = "hw2data/results.csv")
+```
+
+The results_df looks not so tidy, let's tidy it:
+
+```{r}
+results_df <- results_df |>
+  slice(3:n()) |> # We only keep the data from the third row
+  setNames(c("Series", "Episode", "Baker", "Technical", "Result")) # Rename the columns
+```
+
+Now, all three data sets are tidy. We should then check for completeness and correctness across datasets.
+
+## Check for completeness and correctness across datasets:
