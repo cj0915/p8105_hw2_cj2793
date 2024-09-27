@@ -138,7 +138,8 @@ Mr_trashwheel_data <- Mr_trashwheel_data[, -c(15, 16)] |>
   # round the number of sports balls to the nearest integer and converts the result to an    integer variable
   mutate(Sports_Balls = as.integer(round(Sports_Balls))) |>
   # add an additional variable to keep track of Trash Wheel
-  mutate(Trash_Wheel = "Mr. Trash Wheel")
+  mutate(Trash_Wheel = "Mr. Trash Wheel") |>
+  mutate(Year = as.numeric(Year))
 ```
 
 ## Read and clean the Professor Trash Wheel sheet:
@@ -180,3 +181,43 @@ Gwy_trashwheel_data <- Gwy_trashwheel_data |>
   # add an additional variable to keep track of Trash Wheel
   mutate(Trash_Wheel = "Gwynnda Trash Wheel")
 ```
+
+## Combine all datasets into a single tidy dataset
+
+Because different data sheets have different number of trash types, we should reformat the data structures:
+
+```{r}
+Mr_trashwheel_data <- Mr_trashwheel_data |>
+ pivot_longer(
+      cols = c(Plastic_Bottles, Polystyrene, Cigarette_Butts, Glass_Bottles, Plastic_Bags,                Wrappers, Sports_Balls),
+      names_to = "Trash_Type",
+      values_to = "Amount"
+    )
+
+Prof_trashwheel_data <- Prof_trashwheel_data |>
+ pivot_longer(
+      cols = c(Plastic_Bottles, Polystyrene, Cigarette_Butts, Glass_Bottles, Plastic_Bags,                Wrappers),
+      names_to = "Trash_Type",
+      values_to = "Amount"
+    )
+
+Gwy_trashwheel_data <- Gwy_trashwheel_data |>
+ pivot_longer(
+      cols = c(Plastic_Bottles, Polystyrene, Cigarette_Butts, Plastic_Bags, Wrappers),
+      names_to = "Trash_Type",
+      values_to = "Amount"
+    )
+```
+
+After changing the data structure, we can combine the data set:
+
+```{r}
+# Check the data structure to make sure that corresponding variables in each table has the same data format:
+str(Mr_trashwheel_data)
+str(Prof_trashwheel_data)
+str(Gwy_trashwheel_data)
+
+# After checking, we can combine the data set
+combined_data <- bind_rows(Mr_trashwheel_data, Prof_trashwheel_data, Gwy_trashwheel_data)
+```
+
