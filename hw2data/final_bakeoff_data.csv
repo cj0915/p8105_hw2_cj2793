@@ -1,4 +1,4 @@
-Series,Episode,Baker,Baker Age,Baker Occupation,Hometown,Signature.Bake,Show.Stopper,Technical,Result
+series,episode,baker,baker_age,baker_occupation,hometown,signature_bake,show_stopper,technical,result
 1,1,Annetha,30,Midwife,Essex,Light Jamaican Black Cakewith Strawberries and Cream,"Red, White & Blue Chocolate Cake with Cigarellos, Fresh Fruit, and Cream",2,IN
 1,1,David,31,Entrepreneur,Milton Keynes,Chocolate Orange Cake,"Black Forest Floor Gateauxwith Moulded Chocolate Leaves, Fallen Fruitand Chocolate Mushrooms Moulded from eggs",3,IN
 1,1,Edd,24,Debt collector for Yorkshire Bank,Bradford,Caramel Cinnamon and Banana Cake,N/A,1,IN
@@ -74,6 +74,7 @@ Cranberry Bagels",2,IN
 2,1,Ian,40,Fundraiser for English Heritage,"Dunstable, Bedfordshire",Apple and Cinnamon Cupcakes,UNKNOWN,10,IN
 2,1,Janet,63,Teacher of Modern Languages,"Formby, Liverpool",Raspberry and Cream Cupcakes,Chocolate Marble Cakewith Dark and White Chocolate Truffles,8,IN
 2,1,Jason,19,Civil Engineering Student,Croydon,Lemon Meringue CupcakesApple and Cinnamon Cupcakes,UNKNOWN,6,IN
+2,1,Joanne,NA,NA,NA,NA,NA,11,IN
 2,1,Keith,31,House husband,"Arlesey, Bedfordshire",Earl Grey Cupcakes,Chocolate and Sour Cream Cake,12,OUT
 2,1,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire",Banoffee Cupcakes,Chocolate and Raspberry Opera cake,4,IN
 2,1,Robert,25,Photographer,London,Blackberry and Vanilla Cupcakeswith Liquorice Frosting,Genoise Layered Mousse Cakewith Chocolate Ganache,3,IN
@@ -85,6 +86,7 @@ Cranberry Bagels",2,IN
 2,2,Ian,40,Fundraiser for English Heritage,"Dunstable, Bedfordshire","Stilton, Spinach and New Potato Quichewith Paprika and Walnut Pastry",UNKNOWN,2,IN
 2,2,Janet,63,Teacher of Modern Languages,"Formby, Liverpool",Quiche Printanière,Red Fruit TartsChocolate and Cherry Tarts,8,IN
 2,2,Jason,19,Civil Engineering Student,Croydon,Salmon and Pak Choi Quiche,Mint Chocolate Tarts Blueberry Bakewell Tarts,3,STAR BAKER
+2,2,Joanne,NA,NA,NA,NA,NA,10,IN
 2,2,Keith,31,House husband,"Arlesey, Bedfordshire",NA,NA,NA,NA
 2,2,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire","Roasted Cauliflower, Cheese andCaramelised Onion Quiche",Butterscotch Brulée Tarts in Pecan PastryApple Rose Tarts,9,IN
 2,2,Robert,25,Photographer,London,Smoked Bacon and Kale Quiche,"Chocolate, Fennel and Ginger TartAlmond, Creme Patissiere and Poached Pear Tart",5,IN
@@ -96,6 +98,7 @@ Cranberry Bagels",2,IN
 2,3,Ian,40,Fundraiser for English Heritage,"Dunstable, Bedfordshire","Courgette, Caerphilly Cheese and Thyme Loaf",Walnut and Raisin RollsCracked Wheat Logs,10,OUT
 2,3,Janet,63,Teacher of Modern Languages,"Formby, Liverpool",Zupfe Loaf with Gruyère Cheese,Apple and Walnut Granary Rolls Red Onion Cottage Rolls,8,IN
 2,3,Jason,19,Civil Engineering Student,Croydon,Cheese and Onion Tear and Share Loaf,UNKNOWN,7,IN
+2,3,Joanne,NA,NA,NA,NA,NA,1,IN
 2,3,Keith,31,House husband,"Arlesey, Bedfordshire",NA,NA,NA,NA
 2,3,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire",Ploughman's Loaf,Herb and Walnut BreadsChocolate and Chilli Buns,5,IN
 2,3,Robert,25,Photographer,London,Rye and Coriander Seed Loaf,Blueberry Brioche RollsLemon and Poppy Seed Rolls,4,IN
@@ -112,6 +115,7 @@ Blackcurrant Macarons
 Almond Macarons",4,IN
 2,4,Jason,19,Civil Engineering Student,Croydon,Lebkuchen,"Mocktail Macarons
 (Mojito, Cranberry Cooler, and Pina Colada)",1,STAR BAKER
+2,4,Joanne,NA,NA,NA,NA,NA,8,IN
 2,4,Keith,31,House husband,"Arlesey, Bedfordshire",NA,NA,NA,NA
 2,4,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire",Melting Moments,Blackcurrant and Mint MacaronsGooseberry and Elderflower MacaronsHazelnut Macarons,2,IN
 2,4,Robert,25,Photographer,London,Chocolate and Ginger Oat Biscuits,Strawberry and Lime MacaronsLemon MacaronsChocolate and Cardamom Macarons,7,IN
@@ -123,6 +127,7 @@ Almond Macarons",4,IN
 2,5,Ian,40,Fundraiser for English Heritage,"Dunstable, Bedfordshire",NA,NA,NA,NA
 2,5,Janet,63,Teacher of Modern Languages,"Formby, Liverpool",Chicken and Chestnut Pie,Rhubarb Meringue Pie,1,STAR BAKER
 2,5,Jason,19,Civil Engineering Student,Croydon,Brown Down Chicken Pie,Plum Meringue Pie,7,OUT
+2,5,Joanne,NA,NA,NA,NA,NA,6,IN
 2,5,Keith,31,House husband,"Arlesey, Bedfordshire",NA,NA,NA,NA
 2,5,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire",Chicken and Bacon Pie,Midnight Meringue,2,IN
 2,5,Robert,25,Photographer,London,Chicken and Mushroom Pie,Rhubarb and Custard Meringue Pie,3,OUT
@@ -134,6 +139,7 @@ Almond Macarons",4,IN
 2,6,Ian,40,Fundraiser for English Heritage,"Dunstable, Bedfordshire",NA,NA,NA,NA
 2,6,Janet,63,Teacher of Modern Languages,"Formby, Liverpool",Rhubarb and Ginger Baked Cheesecake,Orange and Nougatine Croquembouche,5,IN
 2,6,Jason,19,Civil Engineering Student,Croydon,NA,NA,NA,NA
+2,6,Joanne,NA,NA,NA,NA,NA,1,STAR BAKER
 2,6,Keith,31,House husband,"Arlesey, Bedfordshire",NA,NA,NA,NA
 2,6,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire",Tutti Fruitti Curd Baked Cheesecake,Orange and Praline Croquembouche with Cardamom Caramel,4,IN
 2,6,Robert,25,Photographer,London,NA,NA,NA,NA
@@ -145,6 +151,7 @@ Almond Macarons",4,IN
 2,7,Ian,40,Fundraiser for English Heritage,"Dunstable, Bedfordshire",NA,NA,NA,NA
 2,7,Janet,63,Teacher of Modern Languages,"Formby, Liverpool",Chocolate Amaretto Mousse Cake,Pain Aux RaisinPlain CroissantPain Au Chocolat,4,OUT
 2,7,Jason,19,Civil Engineering Student,Croydon,NA,NA,NA,NA
+2,7,Joanne,NA,NA,NA,NA,NA,3,IN
 2,7,Keith,31,House husband,"Arlesey, Bedfordshire",NA,NA,NA,NA
 2,7,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire",Chocolate and Orange Mousse Cake,Raspberry Rose DanishesPraline SpiralsAlsatian Plaited Danishes,2,IN
 2,7,Robert,25,Photographer,London,NA,NA,NA,NA
@@ -156,13 +163,13 @@ Almond Macarons",4,IN
 2,8,Ian,40,Fundraiser for English Heritage,"Dunstable, Bedfordshire",NA,NA,NA,NA
 2,8,Janet,63,Teacher of Modern Languages,"Formby, Liverpool",NA,NA,NA,NA
 2,8,Jason,19,Civil Engineering Student,Croydon,NA,NA,NA,NA
+2,8,Joanne,NA,NA,NA,NA,NA,1,WINNER
 2,8,Keith,31,House husband,"Arlesey, Bedfordshire",NA,NA,NA,NA
 2,8,Mary-Anne,45,Housewife,"Kidderminster, Worcestershire",Lemon and Ginger Mille Feuille,Fruit Tarts with Elderflower CustardStrawberry and Rhubarb CheesecakesBlack Fruit Meringue with Everlasting Syllabub,3,Runner-up
 2,8,Robert,25,Photographer,London,NA,NA,NA,NA
 2,8,Simon,31,Rugby Coach,Norfolk,NA,NA,NA,NA
 2,8,Urvashi,40,Head of Marketing,"Enfield, London",NA,NA,NA,NA
 2,8,Yasmin,43,Childminder,"West Kirby, The Wirral",NA,NA,NA,NA
-2,NA,Jo,41,Housewife,"Ongar, Essex",NA,NA,NA,NA
 3,1,Brendan,63,Recruitment consultant,Sutton Coldfield,"Plum, Sour Cherry & Walnut",UNKNOWN,10,IN
 3,1,Cathryn,27,Shop assistant,"Pease Pottage, West Sussex","Apple, Hazelnut and Calvados",Hidden Cupcake Cake,5,IN
 3,1,Danny,45,Intensive care consultant,Sheffield,"Plum, Ginger & Orange",UNKNOWN,7,IN
