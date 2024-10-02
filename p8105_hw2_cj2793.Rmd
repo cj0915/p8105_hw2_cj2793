@@ -11,7 +11,7 @@ output: github_document
 
 First, we should read the excel file, select the columns of interest and convert the entry variable from character (YES vs NO) to a logical variable:
 
-```{r}
+```{r message = FALSE}
 library(tidyverse)
 cleaned_transit_df = read_csv(file = "hw2data/NYC_Transit_Subway_Entrance_And_Exit_Data.csv", na = c("NA", ".", "")) |>
   janitor::clean_names() |>
@@ -21,7 +21,11 @@ cleaned_transit_df = read_csv(file = "hw2data/NYC_Transit_Subway_Entrance_And_Ex
 
 transit_row = nrow(cleaned_transit_df)
 
+transit_row
+
 transit_col = ncol(cleaned_transit_df)
+
+transit_col
 ```
 
 This data set contains information about entrances and exits for each subway station in the NYC transit system. The key variables include the subway line (`line`), station name (`station_name`), station location (`station_latitude` combined with `station_longitude`), routes served (`route1` ~ `route11`), whether entry is permitted (`entry`), vending machine availability (`vending`), entrance type (`entrance_type`), and ADA compliance (`ada`). In the cleaning process, we selected these relevant columns from the original data set and converted the `entry` variable from a character format (YES/NO) to a logical format (TRUE/FALSE). The resulting data set contains `r transit_col` columns and retains all `r transit_row` original rows from the source data. These data are not "tidy": route number should be a variable, as should route.
@@ -115,7 +119,7 @@ ada_status_A
 
 ## Read and clean the Mr. Trash Wheel sheet:
 
-```{r}
+```{r message = FALSE}
 library(tidyverse)
 library(readxl)
 
@@ -205,7 +209,7 @@ The data set contains a total of `r num_observations` observations across three 
 
 First, we should import the three data sets:
 
-```{r}
+```{r message = FALSE}
 library(tidyverse)
 bakers_df = read_csv(file = "hw2data/bakers.csv") |>
   janitor::clean_names()
@@ -256,10 +260,13 @@ bakers_df <- bakers_df |>
 
 Now, we have ensured the consistency of data sets. Then, let's use `anti_join` to check the completeness and correctness across data sets.
 
-Let's check how many records from the `bakes_df` do not have a matching `series` and `baker` in the `bakers_df` and vice versa.
+1. Let's check how many records from the `bakes_df` do not have a matching `series` and `baker` in the `bakers_df` and vice versa.
 
 ```{r}
 anti_join(bakes_df, bakers_df, by = c("series", "baker"))
+```
+
+```{r}
 anti_join(bakers_df, bakes_df, by = c("series", "baker"))
 bb_number <- anti_join(bakers_df, bakes_df, by = c("series", "baker")) |>
   nrow()
@@ -267,16 +274,30 @@ bb_number <- anti_join(bakers_df, bakes_df, by = c("series", "baker")) |>
 
 Here we can see that `"Jo"` records from the `bakes_df` do not have a matching `series` and `baker` in the `bakers_df`; `r bb_number` record from the `bakers_df` do not have a matching `series` and `baker` in the `bakes_df`.
 
-We should also check how many records from the `bakes_results` do not have a matching `series`, `episode`, and `baker` in the `results_df` and vice versa.
+2. We should also check how many records from the `bakes_df` do not have a matching `series`, `episode`, and `baker` in the `results_df` and vice versa.
 
 ```{r}
 anti_join(bakes_df, results_df, by = c("series", "episode", "baker"))
-anti_join(results_df, bakes_df, by = c("series", "episode", "baker"))
+```
+
+```{r}
 rb_number <- anti_join(results_df, bakes_df, by = c("series", "episode", "baker")) |>
   nrow()
 ```
 
-Here we can see that `"Jo"` records from the `bakes_df` do not have a matching `series`, `episode`, and `baker` in the `results_df`; `r rb_number` records from the `results_df` that do not have a matching `series`, `episode`, and `baker` in the `bakes_results`.
+Here we can see that `"Jo"` records from the `bakes_df` do not have a matching `series`, `episode`, and `baker` in the `results_df`; `r rb_number` records from the `results_df` that do not have a matching `series`, `episode`, and `baker` in the `bakes_df`.
+
+3. Last but not least, we should also check how many records from the `bakers_df` do not have a matching `series`and `baker` in the `results_df` and vice versa.
+
+```{r}
+anti_join(bakers_df, results_df, by = c("series", "baker"))
+```
+
+```{r}
+anti_join(results_df, bakers_df, by = c("series", "baker"))
+```
+
+Here we can see that `Jo` records from the `bakers_df` do not have a matching `series` and `baker` in the `results_df`; `Joanne` record from the `results_df` do not have a matching `series` and `baker` in the `bakers_df`.
 
 According to `anti_join`, we notice that in `bakes_df`, `"Jo"` should be `Jo`, without quotation marks. Let's change it:
 
@@ -290,7 +311,7 @@ Then, We should check how many records from the `bakes_results` do not have a ma
 anti_join(bakes_df, results_df, by = c("series", "episode", "baker"))
 ```
 
-Here we can see that `Jo` records from the `bakes_df` still do not have a matching `series`, `episode`, and `baker` in the `results_df`, which means that in `results_df`, there is not a candidate called `Jo`. However, `Jo` in `bakes_df` and `bakers_df`is in series 2. We notice that in `results_df`, we have a candidate called `Joanne` in series 2 who also does not appear in `bakes_df`. As a result, we consider `Jo` as `Joanne`:
+Here we can see that `Jo` records from the `bakes_df` still do not have a matching `series`, `episode`, and `baker` in the `results_df`, which means that in `results_df`, there is not a candidate called `Jo`. However, `Jo` in `bakes_df` and `bakers_df`is in series 2. In addition, we notice that in `results_df`, we have a candidate called `Joanne` in series 2 who also does not appear in `bakers_df`. As a result, we consider `Jo` as `Joanne`. As a result, we consider to change `Joanne` to `Jo` in `results_df`.
 
 ```{r}
 results_df[, 3] <- gsub("Joanne", "Jo", results_df[, 3])
@@ -304,22 +325,26 @@ results_df <- results_df |>
   drop_na(result)
 ```
 
-Now, let's use `anti_join` to check the completeness and correctness across data sets again.
+Now, let's use `anti_join` to check the completeness and correctness across data sets again after the modification.
 
 ```{r}
 check_again1 <- anti_join(bakes_df, bakers_df, by = c("series", "baker")) |>
   nrow()
+
 check_again2 <- anti_join(bakes_df, results_df, by = c("series", "episode", "baker")) |>
   nrow()
+
 check_again3 <- anti_join(bakers_df, results_df, by = c("series", "baker")) |>
   nrow()
 
 check_again1
+
 check_again2
+
 check_again3
 ```
 
-From the results of checking, we can see that all obs in `bakes_df` show up in `bakers_df` and `results_df`; all obs in `bakers_df` show up in `results_df`. As a result, we can now join these data sets.
+From the results of checking, we can see that all observations in `bakes_df` show up in `bakers_df` and `results_df`; all obs in `bakers_df` show up in `results_df`. As a result, we can now join these data sets.
 
 ## Merge and organize a single, final dataset
 
@@ -341,7 +366,7 @@ write_csv(final_data, "hw2data/final_bakeoff_data.csv")
 ```
 
 ## Describe the data cleaning process and briefly discuss the final dataset
-The data cleaning process involved importing and standardizing three data sets—`bakers`, `bakes`, and `results`—by cleaning column names and ensuring consistent data types, particularly for `series` and `episode`. A key challenge was unifying baker names, as `bakers_df` used full names while other data sets used first names, so we opted to use only first names for consistency. Another important choice was handling misleading data, such as replacing "Joanne" with "Jo" and adjusting results for "Diana," who withdrew mid-competition. After ensuring completeness across data sets, they were merged into a final data set.
+The data cleaning process involved importing and standardizing three data sets—`bakers`, `bakes`, and `results`—by cleaning column names and ensuring consistent data types, particularly for `series` and `episode`. A key challenge was unifying baker names, as `bakers_df` used full names while other data sets used first names, so we opted to use only first names for consistency. Another important choice was handling misleading data, such as replacing `"Jo"` with `Jo` in `bakes_df`; replacing `Joanne` with `Jo` in `results_df`; and adjusting results for `Diana`, who withdrew mid-competition. After ensuring completeness across data sets, they were merged into a final data set.
 
 Once the data sets were merged, the columns were reorganized for better readability. The `baker_age`, `baker_occupation` and `hometown` columns were moved immediately after the `baker` column. To further enhance the structure of the data set, the data was sorted by series, episode, and baker, ensuring a logical flow that made it easy to track each progress of each series.
 
