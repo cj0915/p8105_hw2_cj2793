@@ -24,7 +24,7 @@ transit_row = nrow(cleaned_transit_df)
 transit_col = ncol(cleaned_transit_df)
 ```
 
-This data set contains information about entrances and exits for each subway station in the NYC transit system. The key variables include the subway line (`line`), station name (`station_name`), station location (`station_latitude` combined with `station_longitude`), routes served (`route1` ~ `route11`), whether entry is permitted (`entry`), vending machine availability (`vending`), entrance type (`entrance_type`), and ADA compliance (`ada`). In the cleaning process, we selected these relevant columns from the original data set and converted the `entry` variable from a character format (YES/NO) to a logical format (TRUE/FALSE). The resulting data set contains `r transit_col` columns and retains all `r transit_row` original rows from the source data. The data set is tidy, as each variable is a column, each observation is a row, and each cell contains a single value.
+This data set contains information about entrances and exits for each subway station in the NYC transit system. The key variables include the subway line (`line`), station name (`station_name`), station location (`station_latitude` combined with `station_longitude`), routes served (`route1` ~ `route11`), whether entry is permitted (`entry`), vending machine availability (`vending`), entrance type (`entrance_type`), and ADA compliance (`ada`). In the cleaning process, we selected these relevant columns from the original data set and converted the `entry` variable from a character format (YES/NO) to a logical format (TRUE/FALSE). The resulting data set contains `r transit_col` columns and retains all `r transit_row` original rows from the source data. These data are not "tidy": route number should be a variable, as should route.
 
 ## Answer the following questions using these data:
 
@@ -124,7 +124,7 @@ file_path <- "hw2data/202409 Trash Wheel Collection Data.xlsx"
 Mr_trashwheel_data <- read_excel(file_path, sheet = "Mr. Trash Wheel", skip = 1) |>
   janitor::clean_names()
 
-Mr_trashwheel_data <- Mr_trashwheel_data[, -c(14, 15, 16)] |>
+Mr_trashwheel_data <- Mr_trashwheel_data[, -c(15, 16)] |>
   # omit rows that do not include dumpster-specific data
   filter(!is.na(dumpster)) |>
   # round the number of sports balls to the nearest integer and converts the result to an    integer variable
@@ -142,7 +142,7 @@ file_path <- "hw2data/202409 Trash Wheel Collection Data.xlsx"
 Prof_trashwheel_data <- read_excel(file_path, sheet = "Professor Trash Wheel", skip = 1) |>
   janitor::clean_names()
 
-Prof_trashwheel_data <- Prof_trashwheel_data[, -c(13)] |>
+Prof_trashwheel_data <- Prof_trashwheel_data |>
   # omit rows that do not include dumpster-specific data
   filter(!is.na(dumpster)) |>
   # add an additional variable to keep track of Trash Wheel
@@ -157,7 +157,7 @@ file_path <- "hw2data/202409 Trash Wheel Collection Data.xlsx"
 Gwy_trashwheel_data <- read_excel(file_path, sheet = "Gwynnda Trash Wheel", skip = 1) |>
   janitor::clean_names()
 
-Gwy_trashwheel_data <- Gwy_trashwheel_data[, -c(12)] |>
+Gwy_trashwheel_data <- Gwy_trashwheel_data |>
   # omit rows that do not include dumpster-specific data
   filter(!is.na(dumpster)) |>
   # add an additional variable to keep track of Trash Wheel
@@ -166,46 +166,11 @@ Gwy_trashwheel_data <- Gwy_trashwheel_data[, -c(12)] |>
 
 ## Combine all datasets into a single tidy dataset:
 
-Because different data sheets have different number of trash types, we should reformat the data structures (To be more specific, we create two new variables `Trash_Type` and `Amount` corresponding to each trash type to make sure that we have the same number of variables in our data set. Note: This may lead to duplicate observations in our data set.):
-
 ```{r}
-Mr_trashwheel_data <- Mr_trashwheel_data |>
- pivot_longer(
-      cols = c(plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags,                wrappers, sports_balls),
-      names_to = "Trash_Type",
-      values_to = "Amount"
-    )
-
-Prof_trashwheel_data <- Prof_trashwheel_data |>
- pivot_longer(
-      cols = c(plastic_bottles, polystyrene, cigarette_butts, glass_bottles, plastic_bags,                wrappers),
-      names_to = "Trash_Type",
-      values_to = "Amount"
-    )
-
-Gwy_trashwheel_data <- Gwy_trashwheel_data |>
- pivot_longer(
-      cols = c(plastic_bottles, polystyrene, cigarette_butts, plastic_bags, wrappers),
-      names_to = "Trash_Type",
-      values_to = "Amount"
-    )
-```
-
-After changing the data structure, we can combine the data set:
-
-```{r}
-# Check the data structure to make sure that corresponding variables in each table has the same data format:
-str(Mr_trashwheel_data)
-str(Prof_trashwheel_data)
-str(Gwy_trashwheel_data)
-
-# After checking, we can combine the data set
 combined_data <- bind_rows(Mr_trashwheel_data, Prof_trashwheel_data, Gwy_trashwheel_data)
 ```
 
 ## Write a paragraph about these data:
-
-Note: Because I have reformatted the three data set before, I will contain two numbers of observations here: `num_observations` describes how many observations in the combined data set (with duplication in long table) and `num_total` describes how many distinct observations in the combined data set.
 
 ```{r}
 # Count the number of observations in the data set (with duplication)
@@ -213,28 +178,9 @@ num_observations <- nrow(combined_data)
 
 num_observations
 
-# Count the distinct number of observation in the data set
-num_Mr <- combined_data |>
-  filter(Trash_Wheel == "Mr. Trash Wheel") |>
-  distinct(dumpster, .keep_all = TRUE) |>
-  nrow()
-
-num_Prof <- combined_data |>
-  filter(Trash_Wheel == "Professor Trash Wheel") |>
-  distinct(dumpster, .keep_all = TRUE) |>
-  nrow()
-
-num_Gwy <- combined_data |>
-  filter(Trash_Wheel == "Gwynnda Trash Wheel") |>
-  distinct(dumpster, date, .keep_all = TRUE) |>
-  nrow()
-
-num_total <- num_Mr + num_Prof + num_Gwy
-
 # Total weight of trash collected by Professor Trash Wheel
 Prof_trashwheel_weight <- combined_data |>
   filter(Trash_Wheel == "Professor Trash Wheel") |>
-  distinct(dumpster, .keep_all = TRUE) |>
   summarize(Total_Weight = sum(weight_tons, na.rm = TRUE)) |>
   pull(Total_Weight)
 
@@ -242,18 +188,16 @@ Prof_trashwheel_weight
 
 # Total number of cigarette butts collected by Gwynnda in June of 2022
 Gwy_cigbutts_number <- combined_data |>
-  filter(Trash_Wheel == "Gwynnda Trash Wheel" & 
-         Trash_Type == "cigarette_butts" & 
+  filter(Trash_Wheel == "Gwynnda Trash Wheel" &
          month == "June" & 
          year == 2022) |>
-  distinct(dumpster, .keep_all = TRUE) |>
-  summarize(Total_Number = sum(Amount, na.rm = TRUE)) |>
+  summarize(Total_Number = sum(cigarette_butts, na.rm = TRUE)) |>
   pull(Total_Number)
 
 Gwy_cigbutts_number
 ```
 
-The data set contains a total of `r num_observations` observations and `r num_total` distinct observations across three trash wheels: Mr. Trash Wheel, Professor Trash Wheel, and Gwynnda Trash Wheel (I include `r num_observations` obs in my combined data set because I transform the data set to a long data table). Each observation represents a record of the amount of trash collected for various categories, such as `plastic_bottles`, `polystyrene`, `cigarette_butts`, `glass_bottles`, and `sports_balls`. One key variable in the data set is `weight_tons`, which records the weight of trash collected in tons. For the available data, Professor Trash Wheel collected a total of `r Prof_trashwheel_weight` tons of trash. Additionally, Gwynnda Trash Wheel collected `r Gwy_cigbutts_number` cigarette butts in June of 2022.
+The data set contains a total of `r num_observations` observations across three trash wheels: Mr. Trash Wheel, Professor Trash Wheel, and Gwynnda Trash Wheel. Each observation represents a record of the amount of trash collected for various categories, such as `plastic_bottles`, `polystyrene`, `cigarette_butts`, `glass_bottles`, and `sports_balls`. One key variable in the data set is `weight_tons`, which records the weight of trash collected in tons. For the available data, Professor Trash Wheel collected a total of `r Prof_trashwheel_weight` tons of trash. Additionally, Gwynnda Trash Wheel collected `r Gwy_cigbutts_number` cigarette butts in June of 2022.
 
 # Problem 3
 
@@ -266,25 +210,14 @@ library(tidyverse)
 bakers_df = read_csv(file = "hw2data/bakers.csv") |>
   janitor::clean_names()
 
-bakes_df = read.csv(file = "hw2data/bakes.csv") |>
+# For bakes_df, we get some potential NA value:
+bakes_df = read.csv(file = "hw2data/bakes.csv", na = c("", "N/A", "UNKNOWN", "Unknown")) |>
   janitor::clean_names()
 
 results_df = read.csv(file = "hw2data/results.csv") |>
-  janitor::clean_names()
-```
-
-The `results_df` looks not so tidy, let's tidy it:
-
-```{r}
-results_df <- results_df |>
+  janitor::clean_names() |>
   slice(3:n()) |> # We only keep the data from the third row
   setNames(c("series", "episode", "baker", "technical", "result")) # Rename the columns
-```
-
-Also, we notice that in `bakes_df`, `"Jo"` should be `Jo`, without quotation marks and let's change it:
-
-```{r}
-bakes_df[,"baker"] <- gsub('"', '', bakes_df[,"baker"])
 ```
 
 Now, all three data sets are tidy. We should then check for completeness and correctness across data sets.
@@ -321,57 +254,81 @@ bakers_df <- bakers_df |>
   mutate(baker = word(baker, 1))
 ```
 
-Now, we have ensured the consistency of data sets. Then, let's use 'anti_join' to check the completeness and correctness across data sets.
+Now, we have ensured the consistency of data sets. Then, let's use `anti_join` to check the completeness and correctness across data sets.
 
-Let's check how many records from the `results_df` that do not have a matching `series` and `baker` in the `bakers_df` and vice versa.
-
-```{r}
-rb_number <- anti_join(results_df, bakers_df, by = c("series", "baker")) |>
-  nrow()
-
-rb_number
-
-br_number <- anti_join(bakers_df, results_df, by = c("series", "baker")) |>
-  nrow()
-
-br_number
-```
-
-Here we can see that `r rb_number` records from the `results_df` that do not have a matching `series` and `baker` in the `bakers_df`; `r br_number` record from the `bakers_df` that do not have a matching `series` and `baker` in the `results_df`.
-
-After checking, we could merge `results_df` with `bakers_df`:
+Let's check how many records from the `bakes_df` do not have a matching `series` and `baker` in the `bakers_df` and vice versa.
 
 ```{r}
-# Perform the first merge of results and bakers
-bakers_results <- results_df |>
-  left_join(bakers_df, by = c("series", "baker"))
+anti_join(bakes_df, bakers_df, by = c("series", "baker"))
+anti_join(bakers_df, bakes_df, by = c("series", "baker"))
+bb_number <- anti_join(bakers_df, bakes_df, by = c("series", "baker")) |>
+  nrow()
 ```
 
-Then, we consider merge `bakes_df` and `bakers_results`:
+Here we can see that `"Jo"` records from the `bakes_df` do not have a matching `series` and `baker` in the `bakers_df`; `r bb_number` record from the `bakers_df` do not have a matching `series` and `baker` in the `bakes_df`.
 
-We should also check how many records from the `bakers_results` that do not have a matching `series`, `episode`, and `baker` in the `bakes_df` and vice versa.
+We should also check how many records from the `bakes_results` do not have a matching `series`, `episode`, and `baker` in the `results_df` and vice versa.
 
 ```{r}
-mb_number <- anti_join(bakers_results, bakes_df, by = c("series", "episode", "baker")) |>
+anti_join(bakes_df, results_df, by = c("series", "episode", "baker"))
+anti_join(results_df, bakes_df, by = c("series", "episode", "baker"))
+rb_number <- anti_join(results_df, bakes_df, by = c("series", "episode", "baker")) |>
   nrow()
-
-mb_number
-
-bm_number <- anti_join(bakes_df, bakers_results, by = c("series", "episode", "baker")) |>
-  nrow()
-
-bm_number
 ```
 
-Here we can see that `r mb_number` records from the `bakers_results` that do not have a matching `series`, `episode`, and `baker` in the `bakes_df`; `r bm_number` records from the `bakes_df` that do not have a matching `series`, `episode`, and `baker` in the `bakes_results`.
+Here we can see that `"Jo"` records from the `bakes_df` do not have a matching `series`, `episode`, and `baker` in the `results_df`; `r rb_number` records from the `results_df` that do not have a matching `series`, `episode`, and `baker` in the `bakes_results`.
+
+According to `anti_join`, we notice that in `bakes_df`, `"Jo"` should be `Jo`, without quotation marks. Let's change it:
+
+```{r}
+bakes_df[,"baker"] <- gsub('"', '', bakes_df[,"baker"])
+```
+
+Then, We should check how many records from the `bakes_results` do not have a matching `series`, `episode`, and `baker` in the `results_df` again after fix the quotation mark problem.
+
+```{r}
+anti_join(bakes_df, results_df, by = c("series", "episode", "baker"))
+```
+
+Here we can see that `Jo` records from the `bakes_df` still do not have a matching `series`, `episode`, and `baker` in the `results_df`, which means that in `results_df`, there is not a candidate called `Jo`. However, `Jo` in `bakes_df` and `bakers_df`is in series 2. We notice that in `results_df`, we have a candidate called `Joanne` in series 2 who also does not appear in `bakes_df`. As a result, we consider `Jo` as `Joanne`:
+
+```{r}
+results_df[, 3] <- gsub("Joanne", "Jo", results_df[, 3])
+```
+
+Also, we notice that `Diana` withdraw from the competition at episode 5 in series 5 (with WD result). As a result, we consider the results of `Diana` after episode 5 in series 5 as `NA`:
+
+```{r}
+results_df <- results_df |>
+  mutate(result = if_else(baker == "Diana" & episode > 5, NA, result)) |>
+  drop_na(result)
+```
+
+Now, let's use `anti_join` to check the completeness and correctness across data sets again.
+
+```{r}
+check_again1 <- anti_join(bakes_df, bakers_df, by = c("series", "baker")) |>
+  nrow()
+check_again2 <- anti_join(bakes_df, results_df, by = c("series", "episode", "baker")) |>
+  nrow()
+check_again3 <- anti_join(bakers_df, results_df, by = c("series", "baker")) |>
+  nrow()
+
+check_again1
+check_again2
+check_again3
+```
+
+From the results of checking, we can see that all obs in `bakes_df` show up in `bakers_df` and `results_df`; all obs in `bakers_df` show up in `results_df`. As a result, we can now join these data sets.
 
 ## Merge and organize a single, final dataset
 
-Finally, we can merge `bakers_results` and `bakes_df` to get the `final_data` and sort rows by Series, Episode, and Baker to ensure meaningful order of observations.
-
 ```{r}
-final_data <- bakers_results |>
-  left_join(bakes_df, by = c("series", "episode", "baker")) |>
+bakes_results <- results_df |>
+  left_join(bakes_df, by = c("series", "episode", "baker"))
+
+final_data <- bakes_results |>
+  left_join(bakers_df, by = c("series", "baker")) |>
   select(series, episode, baker, baker_age, baker_occupation, hometown, 
          signature_bake, show_stopper, technical, result) |>
   arrange(series, episode, baker)
@@ -384,12 +341,7 @@ write_csv(final_data, "hw2data/final_bakeoff_data.csv")
 ```
 
 ## Describe the data cleaning process and briefly discuss the final dataset
-
-The data cleaning process began by importing three datasets: `bakers.csv`, `bakes.csv`, and `results.csv`. Each data set provided a different aspect of information about the Great British Bake Off contestants. Once the data sets were imported, the first task was to clean the `results.csv` file, which had irrelevant information in the first two rows and incorrect column names. To fix this, the first two rows were removed, and the columns were renamed to series, episode, baker, technical, and result. Also, we noticed that in `bakes.csv` file, `"Jo"` should be `Jo`, without quotation marks.
-
-Another issue encountered was the inconsistency in data formats for the `series` and `episode` columns across the data sets. In some files, these were stored as integer values, while in others, they were character values. To standardize the data, these columns were converted to numeric type across all data sets, ensuring that the merging process could proceed smoothly. One of the more significant challenges arose from the fact that the `baker` column in `bakes.csv` and `results.csv` contained only first names, while in `bakers.csv`, full names were used. To resolve this, the first names were extracted from the `baker` column in `bakers.csv` using the `mutate()` and `word()` functions. This allowed the data sets to be merged using the correct identifier.
-
-After the first step of merging the cleaned `results.csv` file with `bakers.csv`, the second merge was performed with `bakes.csv`, using both `series`, `episode`, and `baker` to match contestants' demographic information to their performance data.
+The data cleaning process involved importing and standardizing three data sets—`bakers`, `bakes`, and `results`—by cleaning column names and ensuring consistent data types, particularly for `series` and `episode`. A key challenge was unifying baker names, as `bakers_df` used full names while other data sets used first names, so we opted to use only first names for consistency. Another important choice was handling misleading data, such as replacing "Joanne" with "Jo" and adjusting results for "Diana," who withdrew mid-competition. After ensuring completeness across data sets, they were merged into a final data set.
 
 Once the data sets were merged, the columns were reorganized for better readability. The `baker_age`, `baker_occupation` and `hometown` columns were moved immediately after the `baker` column. To further enhance the structure of the data set, the data was sorted by series, episode, and baker, ensuring a logical flow that made it easy to track each progress of each series.
 
@@ -409,7 +361,7 @@ winners <- starbakers_winners |>
 ```
 
 From the results, we can conclude that most of the winners appear to be in their 30s, except for Nancy, who won Season 5 at the age of 60. Also, we notice that all winners have high ranks of technical skills (ranking at first or second place).
-To our surprise, the competition is highly dynamic and the overall winner isn't always the clear front runner throughout the season.
+To our surprise, the competition is highly dynamic and the overall winner (like David in series 10) could never get star baker throughout the season.
 
 ## Import, clean, tidy, and organize the viewership data
 
